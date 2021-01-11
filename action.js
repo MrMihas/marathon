@@ -108,21 +108,10 @@ window.onload = () => {
 
                         setTimeout(()=>{
                             location.reload();
-                        },2000);
-                      
-                   
-                   
-                    // alert('День '+ elems.getAttribute('value') + " завершено");
-                  
-                        
-                 
+                        });
+                    // alert('День '+ elems.getAttribute('value') + " завершено");      
                 }
-
         });
-
-      
-      
-
 
     });
 
@@ -132,16 +121,29 @@ window.onload = () => {
     if(str.length === +localStorage.getItem('days') && str.length > 0){
         dayEnd.innerHTML = `Марафон закінчено!!`;
         setTimeout(() => {
+           
         if(confirm(' Видалити прогресс?')){
-            
             setTimeout(() => {
-             
                 localStorage.clear(); 
                 location.reload();
-            }, 2000);
+            }, 4000);
+            countDowm();
         }
-        dayEnd.innerHTML = `Видаляємо прогресс`;
-      }, 3000);
+     
+      }, 2000);
+
+      function countDowm(){
+        let e = 3;
+        let g = setInterval(()=>{
+            dayEnd.innerHTML = `Видаляємо прогресс ${e}c`;
+            --e;
+         
+        }, 1000);
+
+        setTimeout(()=>{
+                clearInterval(g);
+        },4000);
+      }
 
             // btnRem.classList.remove('none');
             // btnRem.setAttribute('type','submit');
