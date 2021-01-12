@@ -7,15 +7,30 @@ window.onload = () => {
     let userName = document.querySelector('.name');
     let userDate = document.querySelector('.days');
     let userStart = document.querySelector('.date');
+    let startOut = document.querySelector('.startM');
 
     let date = new Date();
     userStart = date.getUTCDate();
-    
+    month = date.getMonth();
+    let months = Array(
+            'Січня',
+            "Лютого",
+            "Березня",
+            "Квітня",
+            "Травня",
+            "Червня",
+            "Липня",
+            "Серпня",
+            "Вересня",
+            "Жовтня",
+            "Листопада",
+            "Грудня"
+    );
 
     // let userTime = document.querySelector('.time');
     let out = document.querySelector('.out');
     let btnRem = document.querySelector('.btn-rem');
-    let header = document.querySelector('.header');
+    let header = document.querySelector('.header .title');
 
     let ending = document.querySelector('.ending'); //Дострокове закінчення
     let dayEnd = document.querySelector('.day-end');
@@ -24,6 +39,7 @@ window.onload = () => {
     if (localStorage.getItem('hidden') === 'true') {
         formContainer.classList.add('none');
         ending.classList.remove('none');
+        startOut.classList.remove('none');
          createHero();
     } 
 
@@ -50,6 +66,9 @@ window.onload = () => {
     //дни марафона
     function createTable(){
         let days = +localStorage.getItem('days');
+        let start = +localStorage.getItem('date');
+
+        startOut.innerHTML = `Pозпочато ${start} ${months[month]}`;
         for(let i = 0; i <= days -1 ;i++){
 
                     let label = document.createElement('label');
@@ -108,7 +127,7 @@ window.onload = () => {
 
                         setTimeout(()=>{
                             location.reload();
-                        });
+                        }, 2000);
                     // alert('День '+ elems.getAttribute('value') + " завершено");      
                 }
         });
@@ -119,7 +138,7 @@ window.onload = () => {
     let str = document.querySelectorAll('.ch');
     console.log(str.length);
     if(str.length === +localStorage.getItem('days') && str.length > 0){
-        dayEnd.innerHTML = `Марафон закінчено!!`;
+        dayEnd.innerHTML = `Марафон завершено`;
         setTimeout(() => {
            
         if(confirm(' Видалити прогресс?')){
@@ -135,7 +154,7 @@ window.onload = () => {
       function countDowm(){
         let e = 3;
         let g = setInterval(()=>{
-            dayEnd.innerHTML = `Видаляємо прогресс ${e}c`;
+            dayEnd.innerHTML = `Видаляємо прогресс через ${e}c`;
             --e;
          
         }, 1000);
@@ -144,18 +163,6 @@ window.onload = () => {
                 clearInterval(g);
         },4000);
       }
-
-            // btnRem.classList.remove('none');
-            // btnRem.setAttribute('type','submit');
-            // btnRem.setAttribute('value','Почати новий марафон');
-            // div.appendChild(btnRem);
-
-            // btnRem.addEventListener('click', function(){
-                
-            //     localStorage.clear(); 
-            //     location.reload();
-            // });
-          
     } 
 
   
@@ -223,69 +230,94 @@ window.onload = () => {
 
 
     //calendar
+    var fecha = new Date();
 
 
-    function createCalendar(elem, year, month) {
+	function mostrarCalendario(year,month) {
 
-        let mon = month - 1; // месяцы в JS идут от 0 до 11, а не от 1 до 12
-        let d = new Date(year, mon);
-  
-        let table = '<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>';
-  
-        // пробелы для первого ряда
-        // с понедельника до первого дня месяца
-        // * * * 1  2  3  4
-        for (let i = 0; i < getDay(d); i++) {
-          table += '<td></td>';
-        }
-  
-        // <td> ячейки календаря с датами
-        while (d.getMonth() == mon) {
-          table += '<td>' + d.getDate() + '</td>';
-  
-          if (getDay(d) % 7 == 6) { // вс, последний день - перевод строки
-            table += '</tr><tr>';
-          }
-  
-          d.setDate(d.getDate() + 1);
-        }
-  
-        // добить таблицу пустыми ячейками, если нужно
-        // 29 30 31 * * * *
-        if (getDay(d) != 0) {
-          for (let i = getDay(d); i < 7; i++) {
-            table += '<td></td>';
-          }
-        }
-  
-        // закрыть таблицу
-        table += '</tr></table>';
-  
-        elem.innerHTML = table;
-      }
-  
-      function getDay(date) { // получить номер дня недели, от 0 (пн) до 6 (вс)
-        let day = date.getDay();
-        if (day == 0) day = 7; // сделать воскресенье (0) последним днем
-        return day - 1;
-      }
+		// variables
+		var ahora = new Date(year,month-1,1);
+		var ultimo = new Date(year,month,0);
+		var primer_dia_semana = (ahora.getDay()==0)?7:ahora.getDay();
+		var ultimo_dia_mes = ultimo.getDate();
+		var dia = 0;
+		var resultado = "<tr>";
+		var dia_actual = 0;
  
-      let currentDate = new Date();
- let year =  currentDate.getFullYear();
- let month = currentDate.getMonth() + 1;
-  
-      createCalendar(calendar, year, month);
+		var ultima_celda = primer_dia_semana + ultimo_dia_mes;
+
+		for(var i = 1; i <= 42; i++) {
+
+			// El dia que empieza la semana
+			if(i == primer_dia_semana) {
+				dia = 1;
+			}
+
+
+			if(i < primer_dia_semana || i >= ultima_celda) {
+				// celda vacia
+				resultado+="<td class='empty'>&nbsp;</td>";
+			}
+			else {
+
+				// mostramos el dia
+				if
+					(dia == fecha.getDate() && month == fecha.getMonth() + 1 && year == fecha.getFullYear())
+					resultado += "<td class='hoy'>" + dia + "</td>";
+				else
+					resultado += "<td>" + dia + "</td>";
+					dia++;
+			}
+			
+			if(i % 7 == 0) {
+				if(dia > ultimo_dia_mes)
+				break;
+				resultado += "</tr><tr>\n";
+			}
+		}
+
+
+		resultado += "</tr>";
+ 
+ 		// Meses
+		var meses=Array(
+			"Enero",
+			"Febrero",
+			"Marzo",
+			"Abril",
+			"Mayo",
+			"Junio",
+			"Julio",
+			"Agosto",
+			"Septiembre",
+			"Octubre",
+			"Noviembre",
+			"Diciembre"
+		);
+ 
+		// Calculamos el siguiente mes y año
+		nextMonth = month + 1;
+		nextYear = year;
+		if (month + 1 > 12) {
+			nextMonth = 1;
+			nextYear = year + 1;
+		}
+	 
+		// Calculamos el anterior mes y año
+		prevMonth = month - 1;
+		prevYear = year;
+		if(month - 1 < 1) {
+			prevMonth = 12;
+			prevYear = year - 1;
+		}
+ 
+		
+		document.getElementById("calendar").getElementsByTagName("tbody")[0].innerHTML=resultado;
+	}
+ 
+	mostrarCalendario(fecha.getFullYear(),fecha.getMonth()+1);  
 
 }
-
-
-//Дострокове закінчення
-
-
-
-    // if(localStorage.getItem('user') == null){
-    //     createForm();
-    // } 
     
     // //форма 
     // function createForm(){

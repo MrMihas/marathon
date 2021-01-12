@@ -1,7 +1,7 @@
-body{
-    font-size: 18px;
+body {
+    font-family: helvetica, sans-serif;
+    line-height: 1.6;
 }
-
 .none{
     display: none !important;
     opacity: 0;
@@ -22,8 +22,22 @@ body{
     text-transform: uppercase;
     letter-spacing: 2px;
     font-family:sans-serif;
-    padding-top: 20px;
+    padding: 20px 0;
 }
+.header h1{
+    font-size: 2rem;
+    letter-spacing: 4px;
+}
+
+.header .day-end{
+    position: relative;
+    z-index: 1000;
+    font-size: 1.3rem;
+    box-sizing: border-box;
+    padding: 0;
+    text-transform: lowercase;
+    font-weight: lighter;
+    }
 
 .center{
     text-align: center;
@@ -60,7 +74,13 @@ justify-content: center;
 flex-wrap: wrap;
 }
 
-.container label{ 
+.div{
+    display: flex;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.div label{ 
  width: 120px;
 font-size: 22px;
 box-sizing: border-box;
@@ -84,27 +104,17 @@ cursor: pointer;
 
 .form-container{
 width: 100%;
-height: 90vh;
 position: relative;
-top: 0;
-bottom: 0;
-left: 0;
-right: 0;
 display: flex;
 flex-direction: column;
 align-items: center;
 }
 
 .form-container form{
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
 display: flex;
 flex-direction: column;
 justify-content:center;
 flex-wrap: wrap;
-height: 300px;
 align-items: center;
 }
 
@@ -136,10 +146,26 @@ line-height: 1.3;
 
 }
 
-.day-end{
-position: absolute;
-top: 20px;
-left: 50%;
-z-index: 1000;
-font-size: 30px;
+
+
+/* calendar */
+
+
+#calendar {
+    margin: 40px auto;
+}
+
+
+td {
+    border: 1px solid black;
+    padding: 6px 10px;
+    text-align: center;
+}
+.hoy {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+.empty {
+    border: none;
 }
