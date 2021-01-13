@@ -144,16 +144,15 @@
  let notific = function notificationMessage(){
   // Проверка поддержки браузером уведомлений
   if (!("Notification" in window)) {
-    alert("This browser does not support desktop notification");
+    alert("Ваш браузер не підтримує сповіщення");
   }
 
   // Проверка разрешения на отправку уведомлений
   else if (Notification.permission === "granted") {
     // Если разрешено, то создаем уведомление
-    var notification = new Notification("Super",{
-        body: 'if i can, you can too!',
+    var notification = new Notification("Сповіщення зі сторінки марафону",{
+        body: 'Пройшло 24 години після Вашого останнього відвідування',
         dir: "ltr",
-        icon: 'Logo.png'
     });
   }
 
@@ -162,7 +161,7 @@
     Notification.requestPermission(function (permission) {
       // Если пользователь разрешил, то создаем уведомление
       if (permission === "granted") {
-        var notification = new Notification("Hi there!");
+        var notification = new Notification("Вітаю!");
       }
     });
   }
@@ -203,7 +202,7 @@
         },4000);
       }
     } else if( str.length > 0){
-        let tm = 60 * 1000 *60 *24;
+        let tm = 60 * 100;
          setTimeout(()=>{
              notific();
          },tm);
