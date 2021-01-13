@@ -1,4 +1,4 @@
-window.onload = () => {
+
     let form = document.querySelector('form');
     let formContainer = document.querySelector('.form-container');
    
@@ -8,6 +8,7 @@ window.onload = () => {
     let userDate = document.querySelector('.days');
     let userStart = document.querySelector('.date');
     let startOut = document.querySelector('.startM');
+
 
     let date = new Date();
     userStart = date.getUTCDate();
@@ -95,9 +96,7 @@ window.onload = () => {
             elems.setAttribute('disabled', '');
             elems.setAttribute('checked','true');
             elems.classList.add('ch');
-            
-        };
-       
+        } 
         if(elems.checked){
             elems.closest('label').classList.add('done');
         }
@@ -109,36 +108,76 @@ window.onload = () => {
         
        }
 
-
-
         elems.addEventListener('click', function(){
             
         if(confirm(`Закінчити ${ elems.getAttribute('value')}-й день марафону?`)){
 
+
                     localStorage.setItem(flag, flag);
                     elems.setAttribute('disabled', '');
                     elems.classList.add('ch');
+
                     if(elems.checked){
                         elems.closest('label').classList.add('done');
+                        
                     }
+                    // напоминаниечерез 24 часа
 
+                  
                    // оповещение об окончании дня
                         dayEnd.innerHTML = `День <b>${ elems.getAttribute('value')}</b> завершено`;
 
                         setTimeout(()=>{
                             location.reload();
                         }, 2000);
+
+  
                     // alert('День '+ elems.getAttribute('value') + " завершено");      
                 }
         });
 
     });
+    
+ // напоминаниечерез 24 часа
+
+
+ let notific = function notificationMessage(){
+  // Проверка поддержки браузером уведомлений
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  // Проверка разрешения на отправку уведомлений
+  else if (Notification.permission === "granted") {
+    // Если разрешено, то создаем уведомление
+    var notification = new Notification("Super",{
+        body: 'if i can, you can too!',
+        dir: "ltr",
+        icon: 'Logo.png'
+    });
+  }
+
+  // В противном случае, запрашиваем разрешение
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // Если пользователь разрешил, то создаем уведомление
+      if (permission === "granted") {
+        var notification = new Notification("Hi there!");
+      }
+    });
+  }
+
+ }
 
     //очистка по клику
     let str = document.querySelectorAll('.ch');
+
     console.log(str.length);
     if(str.length === +localStorage.getItem('days') && str.length > 0){
+      
+        // clearTimeout(notific);
         dayEnd.innerHTML = `Марафон завершено`;
+
         setTimeout(() => {
            
         if(confirm(' Видалити прогресс?')){
@@ -147,7 +186,7 @@ window.onload = () => {
                 location.reload();
             }, 4000);
             countDowm();
-        }
+        } 
      
       }, 2000);
 
@@ -163,7 +202,14 @@ window.onload = () => {
                 clearInterval(g);
         },4000);
       }
-    } 
+    } else if( str.length > 0){
+        let tm = 60 * 1000 *60 *24;
+         setTimeout(()=>{
+             notific();
+         },tm);
+    } else{
+clearTimeout(notific);
+    }
 
   
    
@@ -212,11 +258,14 @@ window.onload = () => {
     //удалить через n-время
 
     let removeTime = 24*60*60 * (+localStorage.getItem('days') + 1) * 1000;
+    
 
+   function removeAfer(){
     setTimeout(() => {
         localStorage.clear(); 
     }, removeTime); //  время в миллисекундах
 
+   }
 
     ending.addEventListener('click', function(){
         if(confirm('Ви хочете раніше закінчити?')){
@@ -317,7 +366,7 @@ window.onload = () => {
  
 	mostrarCalendario(fecha.getFullYear(),fecha.getMonth()+1);  
 
-}
+
     
     // //форма 
     // function createForm(){
